@@ -57,7 +57,7 @@ public class EvasiveManeuver: MonoBehaviour
         if (playerRigidbody != null)
         {
             if (Mathf.Abs(rigidbody.position.x - playerRigidbody.position.x) <= 0.5)
-                newManeuver = Mathf.MoveTowards(rigidbody.velocity.x, 0, Time.deltaTime * smoothing * 5);//和飞船同一条线时 减低速度 现在值为5
+                newManeuver = Mathf.MoveTowards(rigidbody.velocity.x, 0, Time.deltaTime * smoothing * 5);
         }
         rigidbody.velocity = new Vector3(newManeuver, 0.0f, currentSpeed);
         ////Debug.Log("Time.deltaTime*smoothing:" + Time.deltaTime * smoothing);

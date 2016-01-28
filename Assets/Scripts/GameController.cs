@@ -12,29 +12,46 @@ public class GameController : MonoBehaviour
     public float waveWait;
 
     public Text scoreText;
-    //public Text restartText;
-    public GameObject restartButton;
+    public Text restartText;
     public Text gameOverText;
 
     private bool gameOver;
+    private bool restart;
 
     private int score;
 
+    //private AudioSource audioSource;
+
     void Start()
     {
-        restartButton.SetActive(false);
+        //audioSource = GetComponent<AudioSource>();
+
         gameOver = false;
-        //restartText.text = "";
+        restart= false;
+        restartText.text = "";
         gameOverText.text = "";
         score = 0;
         StartCoroutine(SpawnWaves());
         UpdateScore();
     }
 
+    void Update()
+    {
+        
+        if(restart)
+        {
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                Application.LoadLevel(Application.loadedLevel);
+            }
+        }
+        //Debug.Log(audioSource.time);
+    }
+
     IEnumerator SpawnWaves()
     {
         yield return new WaitForSeconds(startWait);
-        while (gameOver == false)
+        while(gameOver==false)
         {
             for (int i = 0; i < hazardCount; i++)
             {
@@ -45,7 +62,7 @@ public class GameController : MonoBehaviour
 
                 yield return new WaitForSeconds(spawnWait);
                 if (gameOver)
-                    yield break;
+                  yield break;
             }
             yield return new WaitForSeconds(waveWait);
         }
@@ -65,14 +82,8 @@ public class GameController : MonoBehaviour
     public void GameOver()
     {
         gameOverText.text = "Game Over";
-        if (restartButton != null)
-            restartButton.SetActive(true);
-        //restartText.text = "Press 'R' for Restart";
+        restartText.text = "Press 'R' for Restart";
         gameOver = true;
-    }
-
-    public void RestartGame()
-    {
-        Application.LoadLevel(Application.loadedLevel);
+        restart = true;
     }
 }

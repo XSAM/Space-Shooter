@@ -9,13 +9,8 @@ public class Boundary
 
 public class PlayerController : MonoBehaviour
 {
-    //Test The GitHub Sync Function
     private new Rigidbody rigidbody;
     private AudioSource []audioSource;
-    private Quaternion calibrationQuaternion;
-
-    public SimpleTouchPad touchPad;
-    public SimpleTouchAreaButton areaButton;
     public float tilt;
     public float speed;
     public Boundary boundary;
@@ -28,16 +23,22 @@ public class PlayerController : MonoBehaviour
     //private int count = 0;
     //private float time;
 
-
+    void Start()
+    {
+        rigidbody = GetComponent<Rigidbody>();
+        //time=Time.realtimeSinceStartup;
+        audioSource = GetComponents<AudioSource>();
+        
+    }
 
     void Update()
     {
-        if (areaButton.CanFire() && Time.time > nextFire)
+        if (Input.GetButton("Fire1") && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
             foreach(var shotSpawn in shotSpawns)
             {
-                Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
             }
             
             audioSource[0].Play();
@@ -52,42 +53,13 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("Update:transform.position.x:" + transform.position.x);
     }
 
-    void Start()
-    {
-        rigidbody = GetComponent<Rigidbody>();
-        //time=Time.realtimeSinceStartup;
-        audioSource = GetComponents<AudioSource>();
-        CalibrateAccellerometer();
-    }
-    void CalibrateAccellerometer()
-    {
-        Vector3 accelerationSnapshot = Input.acceleration;
-        //Debug.Log(accelerationSnapshot.x+" "+accelerationSnapshot.y+" "+accelerationSnapshot.z);
-        Quaternion rotateQuaternion = Quaternion.FromToRotation(new Vector3(0.0f, 0.0f, -1f), accelerationSnapshot);
-        calibrationQuaternion = Quaternion.Inverse(rotateQuaternion);
-    }
-    Vector3 FixAccelleration(Vector3 acceleration)
-    {
-        Vector3 fixedAcceleration = calibrationQuaternion * acceleration;
-        return fixedAcceleration;
-    }
     void FixedUpdate()
     {
-        Vector3 accelerationRaw = Input.acceleration;
-        //Debug.Log(accelerationRaw.x + " " + accelerationRaw.y + " " + accelerationRaw.z);
-        Vector3 acceleration = FixAccelleration(accelerationRaw);
 
-        //Vector3 movement=new Vector3(acceleration.x,0.0f,acceleration.y);
-        //Debug.Log(" "+movement.x + " " + movement.y + " " + movement.z);
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
 
-        Vector2 direction = touchPad.GetDirection();
-        Vector3 movement = new Vector3(direction.x, 0.0f, direction.y);
-
-        rigidbody.velocity = movement * speed;
-
-        //float moveHorizontal = Input.GetAxis("Horizontal");
-        //float moveVertical = Input.GetAxis("Vertical");
-        //Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
+        rigidbody.velocity = (new Vector3(moveHorizontal, 0, moveVertical) * speed);
 
         //rigidbody.AddForce(new Vector3(moveHorizontal, 0.0f, moveVertical) * speed);
         //if (Time.realtimeSinceStartup - time <= 1f)
