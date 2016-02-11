@@ -3,6 +3,8 @@ using System.Collections;
 
 public class BGMController: MonoBehaviour 
 {
+    public AudioClip audioClipA;
+    public AudioClip audioClipB;
     private AudioSource audioSource;
     static BGMController instance;
 
@@ -17,7 +19,6 @@ public class BGMController: MonoBehaviour
         else
         {
             instance = this;
-
         }
         DontDestroyOnLoad(this.gameObject);
 	}
@@ -26,6 +27,20 @@ public class BGMController: MonoBehaviour
     {
         audioSource = gameObject.GetComponent<AudioSource>();
         audioSource.Play();
+    }
+    
+    void Update()
+    {
+        if(audioSource.isPlaying==false)
+        {
+            if(audioSource.clip==audioClipA)
+                audioSource.clip = audioClipB;
+            else
+            {
+                audioSource.clip = audioClipA;
+            }
+            audioSource.Play();
+        }
     }
 
 }
