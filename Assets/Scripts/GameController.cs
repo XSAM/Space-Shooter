@@ -5,7 +5,8 @@ using System.Collections;
 public class GameController : MonoBehaviour
 {
     [HideInInspector]public int waveCount;
-    public GameObject[] hazards;
+    public GameObject enemyShip;
+    public GameObject[] asteroids;
     public Vector3 spawnValues;
     public int basicHazardCount;
     public float spawnWait;
@@ -49,10 +50,19 @@ public class GameController : MonoBehaviour
             Debug.Log(hazardCount);
             for (int i = 0; i < hazardCount; i++)
             {
-                GameObject hazard = hazards[Random.Range(0, hazards.Length)];
                 Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
-                Quaternion spawnRotation = Quaternion.identity;
-                Instantiate(hazard, spawnPosition, spawnRotation);
+                GameObject hazard;
+                Debug.Log("Probability:" + (0.5f + Mathf.Clamp(0.1f * waveCount / 7, 0f, 0.2f)));
+                //Per 7 wave,increasing 10 percent to spawn enemyShip
+                if(Random.Range(0f,1f)<=(0.5f+Mathf.Clamp(0.1f*waveCount/7,0f,0.2f)))
+                {
+                    hazard = enemyShip;
+                }
+                else
+                {
+                    hazard = asteroids[Random.Range(0, asteroids.Length)];
+                }
+                Instantiate(hazard, spawnPosition, Quaternion.identity);
 
                 yield return new WaitForSeconds(spawnWait);
                 if (gameOver)
