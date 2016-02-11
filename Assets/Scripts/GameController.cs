@@ -4,6 +4,7 @@ using System.Collections;
 
 public class GameController : MonoBehaviour
 {
+    [HideInInspector]public int waveCount;
     public GameObject[] hazards;
     public Vector3 spawnValues;
     public int hazardCount;
@@ -11,6 +12,7 @@ public class GameController : MonoBehaviour
     public float startWait;
     public float waveWait;
 
+    public Text WaveText;
     public Text scoreText;
     //public Text restartText;
     public GameObject restartButton;
@@ -22,6 +24,7 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        waveCount = 0;
         restartButton.SetActive(false);
         gameOver = false;
         //restartText.text = "";
@@ -36,6 +39,8 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(startWait);
         while (gameOver == false)
         {
+            waveCount++;
+            UpdateWave();
             for (int i = 0; i < hazardCount; i++)
             {
                 GameObject hazard = hazards[Random.Range(0, hazards.Length)];
@@ -55,6 +60,11 @@ public class GameController : MonoBehaviour
     {
         score += newScoreValue;
         UpdateScore();
+    }
+    
+    public void UpdateWave()
+    {
+        WaveText.text = "Wave:" + waveCount;
     }
 
     void UpdateScore()

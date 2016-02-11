@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (areaButton.CanFire() && Time.time > nextFire)
+        if (Input.GetButton("Fire1") && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
             foreach(var shotSpawn in shotSpawns)
@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
         Quaternion rotateQuaternion = Quaternion.FromToRotation(new Vector3(0.0f, 0.0f, -1f), accelerationSnapshot);
         calibrationQuaternion = Quaternion.Inverse(rotateQuaternion);
     }
-    Vector3 FixAccelleration(Vector3 acceleration)
+    Vector3 FixAcceleration(Vector3 acceleration)
     {
         Vector3 fixedAcceleration = calibrationQuaternion * acceleration;
         return fixedAcceleration;
@@ -75,12 +75,13 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 accelerationRaw = Input.acceleration;
         //Debug.Log(accelerationRaw.x + " " + accelerationRaw.y + " " + accelerationRaw.z);
-        Vector3 acceleration = FixAccelleration(accelerationRaw);
+        Vector3 acceleration = FixAcceleration(accelerationRaw);
 
         //Vector3 movement=new Vector3(acceleration.x,0.0f,acceleration.y);
         //Debug.Log(" "+movement.x + " " + movement.y + " " + movement.z);
 
-        Vector2 direction = touchPad.GetDirection();
+        //Vector2 direction = touchPad.GetDirection();
+        Vector2 direction = acceleration;
         Vector3 movement = new Vector3(direction.x, 0.0f, direction.y);
 
         rigidbody.velocity = movement * speed;
