@@ -47,12 +47,12 @@ public class GameController : MonoBehaviour
             waveCount++;
             UpdateWave();
             hazardCount = (int)Mathf.Log(waveCount, 2) + basicHazardCount;
-            Debug.Log(hazardCount);
+            //Debug.Log(hazardCount);
             for (int i = 0; i < hazardCount; i++)
             {
                 Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
                 GameObject hazard;
-                Debug.Log("Probability:" + (0.5f + Mathf.Clamp(0.1f * waveCount / 7, 0f, 0.2f)));
+                //Debug.Log("Probability:" + (0.5f + Mathf.Clamp(0.1f * waveCount / 7, 0f, 0.2f)));
                 //Per 7 wave,increasing 10 percent to spawn enemyShip
                 if(Random.Range(0f,1f)<=(0.5f+Mathf.Clamp(0.1f*waveCount/7,0f,0.2f)))
                 {
