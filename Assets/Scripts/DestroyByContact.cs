@@ -38,7 +38,7 @@ public class DestroyByContact : MonoBehaviour
             }
             
             gameController.AddScore(scoreValue);
-            Debug.Log("In:" + this.name + " Destroy:" + other.name+" this.name");
+            //Debug.Log("In:" + this.name + " Destroy:" + other.name+" this.name");
             Destroy(other.gameObject);
             Destroy(gameObject);
         }
